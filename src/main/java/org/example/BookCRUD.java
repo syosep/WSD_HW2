@@ -178,4 +178,19 @@ public class BookCRUD {
             System.out.println("파일 저장 오류 : " + e.getMessage());
         }
     }
+
+    public int totalBook() {
+        String sql = "SELECT COUNT(*) AS count FROM book";
+        int count = 0;
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            System.out.println("전체 도서 수 조회 오류: " + e.getMessage());
+        }
+        return count;
+    }
 }
