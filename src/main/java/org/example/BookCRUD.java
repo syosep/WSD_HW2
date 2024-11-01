@@ -229,4 +229,18 @@ public class BookCRUD {
         }
         return publisherCountMap;
     }
+
+    public void recordUpdateHistory(int bookId, String fieldName, String oldValue, String newValue) {
+        String fileName = "book_" + bookId + "_history.txt";
+        String updateDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String record = updateDate + " - " + fieldName + " 변경: '" + oldValue + "' → '" + newValue + "'";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            writer.write(record);
+            writer.newLine();
+            System.out.println("수정 이력이 파일에 기록되었습니다.");
+        } catch (IOException e) {
+            System.out.println("이력 기록 파일 오류 : " + e.getMessage());
+        }
+    }
 }
