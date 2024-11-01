@@ -46,6 +46,9 @@ public class BookManager {
                 case 6:
                     deleteBook();
                     break;
+                case 7:
+                    crud.saveFile();
+                    break;
                 case 0:
                     System.out.println("프로그램을 종료합니다.");
                     return;

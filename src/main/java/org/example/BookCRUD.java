@@ -1,6 +1,11 @@
 package org.example;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,5 +154,28 @@ public class BookCRUD {
             System.out.println("도서 정렬 오류 : " + e.getMessage());
         }
         return books;
+    }
+
+    public void saveFile() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
+        String timestamp = LocalDateTime.now().format(dtf);
+        String fileName = "data_" + timestamp + ".txt";
+
+        List<Book> books = getAllBooks();
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            for (Book book : books) {
+                bw.write("ID : " + book.getId());
+                bw.write(", 제목 : " + book.getTitle());
+                bw.write(", 저자 : " + book.getAuthor());
+                bw.write(", 출판사 : " + book.getPublisher());
+                bw.write(", 출판일 : " + book.getPublicationDate());
+                bw.write(", 추가일 : " + book.getCreateDate());
+                bw.newLine();
+            }
+            System.out.println("도서 DB가 txt 파일로 저장되었습니다.");
+        } catch (IOException e) {
+            System.out.println("파일 저장 오류 : " + e.getMessage());
+        }
     }
 }
