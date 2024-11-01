@@ -1,14 +1,25 @@
 package org.example;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class BookCRUD {
-    Connection conn;
+    private Connection conn;
+
+    public BookCRUD() {
+        try {
+            String dbFile = "book.db";
+            conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+            System.out.println("데이터베이스에 연결되었습니다.");
+        } catch (SQLException e) {
+            System.out.println("데이터베이스 연결 오류: " + e.getMessage());
+        }
+    }
 
     public void addBook(Book book) {
-        String sql = "INSERT INTO books (title, author, publisher, publication_date, create_date) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO book (title, author, publisher, publication_date, create_date) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, book.getTitle());
             pstmt.setString(2, book.getAuthor());

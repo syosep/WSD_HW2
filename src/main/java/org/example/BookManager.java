@@ -37,16 +37,20 @@ public class BookManager {
     }
 
     private void addBook() {
+        in.nextLine();
+
         System.out.print("도서 제목 : ");
-        String title = in.next();
+        String title = in.nextLine();
         System.out.print("저자 : ");
-        String author = in.next();
+        String author = in.nextLine();
         System.out.print("출판사 : ");
-        String publisher = in.next();
+        String publisher = in.nextLine();
         System.out.print("출판일 : ");
-        String publicationDate = in.next();
+        String publicationDate = in.nextLine();
         System.out.print("DB 추가일 : ");
-        String createDate = in.next();
-        System.out.println("도서가 추가되었습니다.");
+        String createDate = in.nextLine();
+
+        Book book = new Book (0, title, author, publisher, publicationDate, createDate);
+        crud.addBook(book);
     }
 }
