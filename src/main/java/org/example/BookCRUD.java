@@ -7,7 +7,9 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookCRUD {
     private Connection conn;
@@ -189,8 +191,25 @@ public class BookCRUD {
                 count = rs.getInt("count");
             }
         } catch (SQLException e) {
-            System.out.println("전체 도서 수 조회 오류: " + e.getMessage());
+            System.out.println("전체 도서 수 조회 오류 : " + e.getMessage());
         }
         return count;
+    }
+
+    public Map<String, Integer> bookByAuthor() {
+        String sql = "SELECT author, COUNT(*) AS count FROM book GROUP BY author";
+        Map<String, Integer> authorCountMap = new HashMap<>();
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String author = rs.getString("author");
+                int count = rs.getInt("count");
+                authorCountMap.put(author, count);
+            }
+        } catch (SQLException e) {
+            System.out.println("저자별 도서 수 조회 오류 : " + e.getMessage());
+        }
+        return authorCountMap;
     }
 }
