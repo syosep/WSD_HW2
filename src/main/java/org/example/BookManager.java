@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Map;
 import java.util.Scanner;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class BookManager {
             System.out.println("5. 도서 수정");
             System.out.println("6. 도서 삭제");
             System.out.println("7. 도서 DB 저장");
+            System.out.println("8. 도서 통계 보기");
             System.out.println("0. 종료");
             System.out.print("메뉴를 선택하세요: ");
 
@@ -48,6 +50,9 @@ public class BookManager {
                     break;
                 case 7:
                     crud.saveFile();
+                    break;
+                case 8:
+                    statisticsBook();
                     break;
                 case 0:
                     System.out.println("프로그램을 종료합니다.");
@@ -152,6 +157,25 @@ public class BookManager {
                         ", 출판일 : " + book.getPublicationDate() +
                         ", 추가일 : " + book.getCreateDate());
             }
+        }
+    }
+
+    private void statisticsBook() {
+        System.out.println("===== 도서 통계 =====");
+
+        int totalBooks = crud.totalBook();
+        System.out.println("전체 도서 수 : " + totalBooks);
+
+        Map<String, Integer> authorCount = crud.bookByAuthor();
+        System.out.println("\n* 저자별 도서 수");
+        for (Map.Entry<String, Integer> entry : authorCount.entrySet()) {
+            System.out.println("저자 : " + entry.getKey() + " - 도서 수 : " + entry.getValue());
+        }
+
+        Map<String, Integer> publisherCount = crud.bookByPublisher();
+        System.out.println("\n* 출판사별 도서 수");
+        for (Map.Entry<String, Integer> entry : publisherCount.entrySet()) {
+            System.out.println("출판사 : " + entry.getKey() + " - 도서 수 : " + entry.getValue());
         }
     }
 }
