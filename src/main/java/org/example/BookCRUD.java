@@ -1,9 +1,8 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookCRUD {
     private Connection conn;
@@ -31,5 +30,28 @@ public class BookCRUD {
         } catch (SQLException e) {
             System.out.println("도서 추가 오류 : " + e.getMessage());
         }
+    }
+
+    public List<Book> getAllBooks() {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM book";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                String publisher = rs.getString("publisher");
+                String publicationDate = rs.getString("publication_date");
+                String createDate = rs.getString("create_date");
+
+                Book book = new Book(id, title, author, publisher, publicationDate, createDate);
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            System.out.println("도서 조회 오류: " + e.getMessage());
+        }
+        return books;
     }
 }

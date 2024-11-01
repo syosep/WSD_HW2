@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.Scanner;
+import java.util.List;
 
 public class BookManager {
     private BookCRUD crud;
@@ -24,9 +25,16 @@ public class BookManager {
             System.out.print("메뉴를 선택하세요: ");
 
             int choice = in.nextInt();
+            in.nextLine();
+
             switch (choice) {
+                case 1:
+                    listBook();
+                    break;
+
                 case 4:
                     addBook();
+                    break;
                 case 0:
                     System.out.println("프로그램을 종료합니다.");
                     return;
@@ -52,5 +60,18 @@ public class BookManager {
 
         Book book = new Book (0, title, author, publisher, publicationDate, createDate);
         crud.addBook(book);
+    }
+
+    private void listBook() {
+        List<Book> books = crud.getAllBooks();
+        System.out.println("[도서 목록]");
+        for (Book book : books) {
+            System.out.println("ID: " + book.getId() +
+                    ", 제목: " + book.getTitle() +
+                    ", 저자: " + book.getAuthor() +
+                    ", 출판사: " + book.getPublisher() +
+                    ", 출판일: " + book.getPublicationDate() +
+                    ", 추가일: " + book.getCreateDate());
+        }
     }
 }
