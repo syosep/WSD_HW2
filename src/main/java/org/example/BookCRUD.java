@@ -243,4 +243,28 @@ public class BookCRUD {
             System.out.println("이력 기록 파일 오류 : " + e.getMessage());
         }
     }
+
+    public Book getBookByID(int id) {
+        String sql = "SELECT * FROM book WHERE id = ?";
+        Book book = null;
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                book = new Book(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getString("publisher"),
+                        rs.getString("publication_date"),
+                        rs.getString("create_date")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("도서 조회 오류 : " + e.getMessage());
+        }
+        return book;
+    }
 }
