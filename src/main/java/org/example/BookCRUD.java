@@ -75,4 +75,79 @@ public class BookCRUD {
             System.out.println("도서 수정 오류 : " + e.getMessage());
         }
     }
+
+    public void deleteBook(int id) {
+        String sql = "DELETE FROM book WHERE id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+
+            int index = pstmt.executeUpdate();
+            if (index > 0) {
+                System.out.println("도서가 삭제되었습니다.");
+            } else {
+                System.out.println("해당 ID의 도서를 찾을 수 없습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("도서 삭제 오류 : " + e.getMessage());
+        }
+    }
+
+    public List<Book> searchBook(String keyword) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM book WHERE title LIKE ? OR author LIKE ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, "%" + keyword + "%");
+            pstmt.setString(2, "%" + keyword + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                String publisher = rs.getString("publisher");
+                String publicationDate = rs.getString("publication_date");
+                String createDate = rs.getString("create_date");
+
+                Book book = new Book(id, title, author, publisher, publicationDate, createDate);
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            System.out.println("도서 검색 오류 : " + e.getMessage());
+        }
+        return books;
+    }
+
+    public List<Book> sortBook(String sortType) {
+        List<Book> books = new ArrayList<>();
+        String sql;
+
+        if ("author".equalsIgnoreCase(sortType)) {
+            sql = "SELECT * FROM book ORDER BY author";
+        } else if ("publisher".equalsIgnoreCase(sortType)) {
+            sql = "SELECT * FROM book ORDER BY publisher";
+        } else {
+            System.out.println("저자와 출판사로만 정렬이 가능합니다.");
+            return books;
+        }
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                String publisher = rs.getString("publisher");
+                String publicationDate = rs.getString("publication_date");
+                String createDate = rs.getString("create_date");
+
+                Book book = new Book(id, title, author, publisher, publicationDate, createDate);
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            System.out.println("도서 정렬 오류 : " + e.getMessage());
+        }
+        return books;
+    }
 }

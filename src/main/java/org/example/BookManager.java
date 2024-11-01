@@ -31,11 +31,20 @@ public class BookManager {
                 case 1:
                     listBook();
                     break;
+                case 2:
+                    sortBook();
+                    break;
+                case 3:
+                    searchBook();
+                    break;
                 case 4:
                     addBook();
                     break;
                 case 5:
                     updateBook();
+                    break;
+                case 6:
+                    deleteBook();
                     break;
                 case 0:
                     System.out.println("프로그램을 종료합니다.");
@@ -92,5 +101,54 @@ public class BookManager {
         String newPublicationDate = in.nextLine();
 
         crud.updateBook(id, newTitle, newAuthor, newPublisher, newPublicationDate);
+    }
+
+    private void deleteBook() {
+        System.out.print("삭제할 도서의 ID를 입력하세요 : ");
+        int id = in.nextInt();
+        in.nextLine();
+
+        crud.deleteBook(id);
+    }
+
+    private void searchBook() {
+        System.out.print("검색할 키워드를 입력하세요 : ");
+        String keyword = in.nextLine();
+
+        List<Book> books = crud.searchBook(keyword);
+        if (books.isEmpty()) {
+            System.out.println("검색 결과가 없습니다.");
+        } else {
+            System.out.println("<검색 결과>");
+            for (Book book : books) {
+                System.out.println("ID: " + book.getId() +
+                        ", 제목: " + book.getTitle() +
+                        ", 저자: " + book.getAuthor() +
+                        ", 출판사: " + book.getPublisher() +
+                        ", 출판일: " + book.getPublicationDate() +
+                        ", 추가일: " + book.getCreateDate());
+            }
+        }
+    }
+
+    private void sortBook() {
+        System.out.print("정렬 기준을 선택하세요. (author / publisher) : ");
+        String sortType = in.nextLine();
+
+        List<Book> books = crud.sortBook(sortType);
+
+        if (books.isEmpty()) {
+            System.out.println("정렬할 도서가 없습니다.");
+        } else {
+            System.out.println("정렬된 도서 목록:");
+            for (Book book : books) {
+                System.out.println("ID : " + book.getId() +
+                        ", 제목 : " + book.getTitle() +
+                        ", 저자 : " + book.getAuthor() +
+                        ", 출판사 : " + book.getPublisher() +
+                        ", 출판일 : " + book.getPublicationDate() +
+                        ", 추가일 : " + book.getCreateDate());
+            }
+        }
     }
 }
