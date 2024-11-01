@@ -212,4 +212,21 @@ public class BookCRUD {
         }
         return authorCountMap;
     }
+
+    public Map<String, Integer> bookByPublisher() {
+        String sql = "SELECT publisher, COUNT(*) AS count FROM book GROUP BY publisher";
+        Map<String, Integer> publisherCountMap = new HashMap<>();
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String publisher = rs.getString("publisher");
+                int count = rs.getInt("count");
+                publisherCountMap.put(publisher, count);
+            }
+        } catch (SQLException e) {
+            System.out.println("출판사별 도서 수 조회 오류 : " + e.getMessage());
+        }
+        return publisherCountMap;
+    }
 }
