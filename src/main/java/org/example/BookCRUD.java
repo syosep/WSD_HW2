@@ -54,4 +54,25 @@ public class BookCRUD {
         }
         return books;
     }
+
+    public void updateBook(int id, String newTitle, String newAuthor, String newPublisher, String newPublicationDate) {
+        String sql = "UPDATE book SET title = ?, author = ?, publisher = ?, publication_date = ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newTitle);
+            pstmt.setString(2, newAuthor);
+            pstmt.setString(3, newPublisher);
+            pstmt.setString(4, newPublicationDate);
+            pstmt.setInt(5, id);
+
+            int index = pstmt.executeUpdate();
+            if (index > 0) {
+                System.out.println("도서 정보가 수정되었습니다.");
+            } else {
+                System.out.println("해당 ID의 도서를 찾을 수 없습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("도서 수정 오류 : " + e.getMessage());
+        }
+    }
 }
