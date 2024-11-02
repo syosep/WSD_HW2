@@ -63,8 +63,28 @@ public class BookCRUD {
     }
 
     public void updateBook(int id, String newTitle, String newAuthor, String newPublisher, String newPublicationDate) {
-        String sql = "UPDATE book SET title = ?, author = ?, publisher = ?, publication_date = ? WHERE id = ?";
+        Book oldBook = getBookById(id); // 기존 정보를 가져옴
+        if (oldBook == null) {
+            System.out.println("해당 도서가 존재하지 않습니다.");
+            return;
+        }
 
+        // 각 필드를 비교하여 변경 사항이 있는 경우만 업데이트
+        if (!newTitle.equals(oldBook.getTitle())) {
+            recordUpdateHistory(id, "title", oldBook.getTitle(), newTitle);
+        }
+        if (!newAuthor.equals(oldBook.getAuthor())) {
+            recordUpdateHistory(id, "author", oldBook.getAuthor(), newAuthor);
+        }
+        if (!newPublisher.equals(oldBook.getPublisher())) {
+            recordUpdateHistory(id, "publisher", oldBook.getPublisher(), newPublisher);
+        }
+        if (!newPublicationDate.equals(oldBook.getPublicationDate())) {
+            recordUpdateHistory(id, "publication_date", oldBook.getPublicationDate(), newPublicationDate);
+        }
+
+        // 업데이트 SQL 실행
+        String sql = "UPDATE book SET title = ?, author = ?, publisher = ?, publication_date = ? WHERE id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, newTitle);
             pstmt.setString(2, newAuthor);
@@ -72,14 +92,14 @@ public class BookCRUD {
             pstmt.setString(4, newPublicationDate);
             pstmt.setInt(5, id);
 
-            int index = pstmt.executeUpdate();
-            if (index > 0) {
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
                 System.out.println("도서 정보가 수정되었습니다.");
             } else {
                 System.out.println("해당 ID의 도서를 찾을 수 없습니다.");
             }
         } catch (SQLException e) {
-            System.out.println("도서 수정 오류 : " + e.getMessage());
+            System.out.println("도서 수정 오류: " + e.getMessage());
         }
     }
 
@@ -244,7 +264,7 @@ public class BookCRUD {
         }
     }
 
-    public Book getBookByID(int id) {
+    public Book getBookById(int id) {
         String sql = "SELECT * FROM book WHERE id = ?";
         Book book = null;
 
