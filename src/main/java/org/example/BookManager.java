@@ -119,7 +119,7 @@ public class BookManager {
         String newAuthor = in.nextLine();
         System.out.print("새로운 출판사 : ");
         String newPublisher = in.nextLine();
-        System.out.print("새로운 출판일 (예: 2024-11-02) : ");
+        System.out.print("새로운 출판일 (예: 2024년 11월 02일) : ");
         String newPublicationDate = in.nextLine();
 
         crud.updateBook(id, newTitle, newAuthor, newPublisher, newPublicationDate);
