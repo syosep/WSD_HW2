@@ -67,8 +67,6 @@ public class BookManager {
     }
 
     private void addBook() {
-        in.nextLine();
-
         System.out.print("도서 제목 : ");
         String title = in.nextLine();
         System.out.print("저자 : ");
