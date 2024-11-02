@@ -1,5 +1,8 @@
 package org.example;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.List;
@@ -176,6 +179,21 @@ public class BookManager {
         System.out.println("\n* 출판사별 도서 수");
         for (Map.Entry<String, Integer> entry : publisherCount.entrySet()) {
             System.out.println("출판사 : " + entry.getKey() + " - 도서 수 : " + entry.getValue());
+        }
+    }
+
+    private void viewUpdateHistory(int bookId) {
+        String fileName = "book_" + bookId + "_history.txt";
+
+        System.out.println("도서 ID " + bookId + "의 수정 이력:");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("이력 파일 조회 오류: " + e.getMessage());
         }
     }
 }
