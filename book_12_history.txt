@@ -1,0 +1,8 @@
+2024-11-02 15:41:13 - title 변경: 'test' → 'test1'
+2024-11-02 15:41:13 - author 변경: 'test' → 'test1'
+2024-11-02 15:41:13 - publisher 변경: 'test' → 'test1'
+2024-11-02 15:41:13 - publication_date 변경: 'test' → 'test1'
+2024-11-02 15:50:27 - title 변경: 'test1' → 'test3'
+2024-11-02 15:50:27 - author 변경: 'test1' → 'test3'
+2024-11-02 15:50:27 - publisher 변경: 'test1' → 'test3'
+2024-11-02 15:50:27 - publication_date 변경: 'test1' → 'test3'
