@@ -18,6 +18,9 @@ public class BookManager {
 
     public void showMenu() {
         while (true) {
+            System.out.println("\n====================");
+            System.out.println(" 도서 관리 프로그램 ");
+            System.out.println("====================");
             System.out.println("1. 도서 목록 보기");
             System.out.println("2. 도서 목록 정렬");
             System.out.println("3. 도서 검색");
@@ -26,8 +29,9 @@ public class BookManager {
             System.out.println("6. 도서 삭제");
             System.out.println("7. 도서 DB 저장");
             System.out.println("8. 도서 통계 보기");
+            System.out.println("9. 도서 수정 이력 보기");
             System.out.println("0. 종료");
-            System.out.print("메뉴를 선택하세요: ");
+            System.out.print("\n메뉴를 선택하세요 : ");
 
             int choice = in.nextInt();
             in.nextLine();
@@ -57,16 +61,20 @@ public class BookManager {
                 case 8:
                     statisticsBook();
                     break;
+                case 9:
+                    showUpdateHistory();
+                    break;
                 case 0:
-                    System.out.println("프로그램을 종료합니다.");
+                    System.out.println("\n프로그램을 종료합니다.");
                     return;
                 default:
-                    System.out.println("잘못된 선택입니다.");
+                    System.out.println("\n잘못된 선택입니다. 다시 입력해주세요.");
             }
         }
     }
 
     private void addBook() {
+        System.out.println("\n== 도서 추가 ==");
         System.out.print("도서 제목 : ");
         String title = in.nextLine();
         System.out.print("저자 : ");
@@ -80,22 +88,27 @@ public class BookManager {
 
         Book book = new Book (0, title, author, publisher, publicationDate, createDate);
         crud.addBook(book);
+        System.out.println("도서가 성공적으로 추가되었습니다.");
     }
 
     private void listBook() {
         List<Book> books = crud.getAllBooks();
-        System.out.println("[도서 목록]");
+        System.out.println("\n== 도서 목록 ==");
         for (Book book : books) {
-            System.out.println("ID : " + book.getId() +
-                    ", 제목 : " + book.getTitle() +
-                    ", 저자 : " + book.getAuthor() +
-                    ", 출판사 : " + book.getPublisher() +
-                    ", 출판일 : " + book.getPublicationDate() +
-                    ", 추가일 : " + book.getCreateDate());
+            System.out.println("────────────────────");
+            System.out.println("ID : " + book.getId());
+            System.out.println("제목 : " + book.getTitle());
+            System.out.println("저자 : " + book.getAuthor());
+            System.out.println("출판사 : " + book.getPublisher());
+            System.out.println("출판일 : " + book.getPublicationDate());
+            System.out.println("추가일 : " + book.getCreateDate());
         }
+        System.out.println("────────────────────");
+        System.out.println("총 " + books.size() + "권의 도서가 있습니다.");
     }
 
     private void updateBook() {
+        System.out.println("\n== 도서 정보 수정 ==");
         System.out.print("수정할 도서의 ID를 입력하세요 : ");
         int id = in.nextInt();
         in.nextLine();
@@ -106,21 +119,25 @@ public class BookManager {
         String newAuthor = in.nextLine();
         System.out.print("새로운 출판사 : ");
         String newPublisher = in.nextLine();
-        System.out.print("새로운 출판일 : ");
+        System.out.print("새로운 출판일 (예: 2024-11-02) : ");
         String newPublicationDate = in.nextLine();
 
         crud.updateBook(id, newTitle, newAuthor, newPublisher, newPublicationDate);
+        System.out.println("도서 정보가 성공적으로 수정되었습니다.");
     }
 
     private void deleteBook() {
+        System.out.println("\n== 도서 삭제 ==");
         System.out.print("삭제할 도서의 ID를 입력하세요 : ");
         int id = in.nextInt();
         in.nextLine();
 
         crud.deleteBook(id);
+        System.out.println("도서가 성공적으로 삭제되었습니다.");
     }
 
     private void searchBook() {
+        System.out.println("\n== 도서 검색 ==");
         System.out.print("검색할 키워드를 입력하세요 : ");
         String keyword = in.nextLine();
 
@@ -130,17 +147,21 @@ public class BookManager {
         } else {
             System.out.println("<검색 결과>");
             for (Book book : books) {
-                System.out.println("ID: " + book.getId() +
-                        ", 제목: " + book.getTitle() +
-                        ", 저자: " + book.getAuthor() +
-                        ", 출판사: " + book.getPublisher() +
-                        ", 출판일: " + book.getPublicationDate() +
-                        ", 추가일: " + book.getCreateDate());
+                System.out.println("────────────────────");
+                System.out.println("ID : " + book.getId());
+                System.out.println("제목 : " + book.getTitle());
+                System.out.println("저자 : " + book.getAuthor());
+                System.out.println("출판사 : " + book.getPublisher());
+                System.out.println("출판일 : " + book.getPublicationDate());
+                System.out.println("추가일 : " + book.getCreateDate());
             }
+            System.out.println("────────────────────");
+            System.out.println("총 " + books.size() + "권의 도서가 검색되었습니다.");
         }
     }
 
     private void sortBook() {
+        System.out.println("\n== 도서 정렬 ==");
         System.out.print("정렬 기준을 선택하세요. (author / publisher) : ");
         String sortType = in.nextLine();
 
@@ -149,20 +170,23 @@ public class BookManager {
         if (books.isEmpty()) {
             System.out.println("정렬할 도서가 없습니다.");
         } else {
-            System.out.println("정렬된 도서 목록:");
+            System.out.println("<정렬된 도서 목록>");
             for (Book book : books) {
-                System.out.println("ID : " + book.getId() +
-                        ", 제목 : " + book.getTitle() +
-                        ", 저자 : " + book.getAuthor() +
-                        ", 출판사 : " + book.getPublisher() +
-                        ", 출판일 : " + book.getPublicationDate() +
-                        ", 추가일 : " + book.getCreateDate());
+                System.out.println("────────────────────");
+                System.out.println("ID : " + book.getId());
+                System.out.println("제목 : " + book.getTitle());
+                System.out.println("저자 : " + book.getAuthor());
+                System.out.println("출판사 : " + book.getPublisher());
+                System.out.println("출판일 : " + book.getPublicationDate());
+                System.out.println("추가일 : " + book.getCreateDate());
             }
+            System.out.println("────────────────────");
+            System.out.println("총 " + books.size() + "권의 도서가 정렬되었습니다.");
         }
     }
 
     private void statisticsBook() {
-        System.out.println("===== 도서 통계 =====");
+        System.out.println("\n== 도서 통계 ==");
 
         int totalBooks = crud.totalBook();
         System.out.println("전체 도서 수 : " + totalBooks);
@@ -180,10 +204,19 @@ public class BookManager {
         }
     }
 
+    private void showUpdateHistory() {
+        System.out.print("수정 이력을 조회할 도서의 ID를 입력하세요: ");
+        int bookId = in.nextInt();
+        in.nextLine(); // 개행 문자 소비
+
+        viewUpdateHistory(bookId);
+    }
+
     private void viewUpdateHistory(int bookId) {
         String fileName = "book_" + bookId + "_history.txt";
 
-        System.out.println("도서 ID " + bookId + "의 수정 이력:");
+        System.out.println("\n== 도서 수정 이력 보기 ==");
+        System.out.println("도서 ID " + bookId + "의 수정 이력 :");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -191,7 +224,7 @@ public class BookManager {
                 System.out.println(line);
             }
         } catch (IOException e) {
-            System.out.println("이력 파일 조회 오류: " + e.getMessage());
+            System.out.println("이력 파일 조회 오류 : " + e.getMessage());
         }
     }
 }
